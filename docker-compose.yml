@@ -39,3 +39,4 @@ services:
 volumes:
   mysql_data:
   data_protection_keys:
+  
