@@ -42,7 +42,6 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = builder.Configuration["Google:ClientSecret"];
     options.CallbackPath = "/signin-google";
     options.SaveTokens = true;
-
     options.Events.OnCreatingTicket = async ctx =>
     {
         var fullName = ctx.Principal.FindFirstValue(ClaimTypes.Name)?.Trim();
@@ -73,7 +72,7 @@ builder.Services.AddAuthentication(options =>
             user = new User
             {
                 Email = email,
-                Name = fullName??email,
+                Name = fullName ?? email,
                 SchoolID = regUser.SchoolID,
                 ClassroomID = regUser.ClassroomID,
                 Phone = phone ?? string.Empty,
@@ -89,8 +88,31 @@ builder.Services.AddAuthentication(options =>
                 user.Name = fullName;
                 await db.SaveChangesAsync();
             }
+
+            // Update role if changed in ListOfUsers
+            if (user.Role != regUser.Role)
+            {
+                user.Role = regUser.Role;
+                await db.SaveChangesAsync();
+            }
+        }
+
+        // Add claims for authentication cookie
+        var claimsIdentity = ctx.Principal.Identity as ClaimsIdentity;
+        if (claimsIdentity != null)
+        {
+            // Remove old role claims if exist
+            var existingRoleClaim = claimsIdentity.FindFirst(ClaimTypes.Role);
+            if (existingRoleClaim != null)
+            {
+                claimsIdentity.RemoveClaim(existingRoleClaim);
+            }
+
+            // Add role claim
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, user.Role.ToString()));
         }
     };
+
 });
 var app = builder.Build();
 

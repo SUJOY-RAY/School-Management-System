@@ -4,3 +4,5 @@ obj
 SMS/School Management System/.env
 DataProtection-Keys
 /School Management System/.env
+.vs
+.env

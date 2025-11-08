@@ -11,7 +11,39 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Static\admin-index-page-grid - Copy (2)\images - Copy (2).jpeg" />
+    <Content Remove="wwwroot\Static\admin-index-page-grid - Copy (2)\images - Copy (3).jpeg" />
+    <Content Remove="wwwroot\Static\admin-index-page-grid - Copy (2)\images - Copy (4).jpeg" />
+    <Content Remove="wwwroot\Static\admin-index-page-grid - Copy (2)\images - Copy.jpeg" />
+    <Content Remove="wwwroot\Static\admin-index-page-grid - Copy (2)\images.jpeg" />
+    <Content Remove="wwwroot\Static\admin-index-page-grid - Copy (3)\images - Copy (2).jpeg" />
+    <Content Remove="wwwroot\Static\admin-index-page-grid - Copy (3)\images - Copy (3).jpeg" />
+    <Content Remove="wwwroot\Static\admin-index-page-grid - Copy (3)\images - Copy (4).jpeg" />
+    <Content Remove="wwwroot\Static\admin-index-page-grid - Copy (3)\images - Copy.jpeg" />
+    <Content Remove="wwwroot\Static\admin-index-page-grid - Copy (3)\images.jpeg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Static\teacher-index-page-grid\images - Copy %282%29.jpeg" />
+    <None Include="wwwroot\Static\teacher-index-page-grid\images - Copy %283%29.jpeg" />
+    <None Include="wwwroot\Static\teacher-index-page-grid\images - Copy %284%29.jpeg" />
+    <None Include="wwwroot\Static\teacher-index-page-grid\images - Copy.jpeg" />
+    <None Include="wwwroot\Static\teacher-index-page-grid\images.jpeg" />
+    <None Include="wwwroot\Static\student-index-page-grid\images - Copy %282%29.jpeg" />
+    <None Include="wwwroot\Static\student-index-page-grid\images - Copy %283%29.jpeg" />
+    <None Include="wwwroot\Static\student-index-page-grid\images - Copy %284%29.jpeg" />
+    <None Include="wwwroot\Static\student-index-page-grid\images - Copy.jpeg" />
+    <None Include="wwwroot\Static\student-index-page-grid\images.jpeg" />
+    <None Include="wwwroot\Static\admin-index-page-grid\images - Copy %282%29.jpeg" />
+    <None Include="wwwroot\Static\admin-index-page-grid\images - Copy %283%29.jpeg" />
+    <None Include="wwwroot\Static\admin-index-page-grid\images - Copy %284%29.jpeg" />
+    <None Include="wwwroot\Static\admin-index-page-grid\images - Copy.jpeg" />
+    <None Include="wwwroot\Static\admin-index-page-grid\images.jpeg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">

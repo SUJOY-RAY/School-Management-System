@@ -12,8 +12,8 @@ using School_Management_System.Infrastructure;
 namespace School_Management_System.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251107041050_INIT")]
-    partial class INIT
+    [Migration("20251108132833_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,7 +58,7 @@ namespace School_Management_System.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
-                    b.Property<int>("SchoolID")
+                    b.Property<int?>("SchoolID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -232,8 +232,7 @@ namespace School_Management_System.Migrations
                     b.HasOne("School_Management_System.Models.school_related.School", "School")
                         .WithMany("Users")
                         .HasForeignKey("SchoolID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Classroom");
 

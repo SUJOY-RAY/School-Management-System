@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace School_Management_System.Migrations
 {
     /// <inheritdoc />
-    public partial class INIT : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -122,7 +122,7 @@ namespace School_Management_System.Migrations
                     Phone = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Role = table.Column<int>(type: "int", nullable: false),
-                    SchoolID = table.Column<int>(type: "int", nullable: false),
+                    SchoolID = table.Column<int>(type: "int", nullable: true),
                     ClassroomID = table.Column<int>(type: "int", nullable: true),
                     AttendanceId = table.Column<int>(type: "int", nullable: true)
                 },

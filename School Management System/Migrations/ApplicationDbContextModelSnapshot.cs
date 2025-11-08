@@ -55,7 +55,7 @@ namespace School_Management_System.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
-                    b.Property<int>("SchoolID")
+                    b.Property<int?>("SchoolID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -229,8 +229,7 @@ namespace School_Management_System.Migrations
                     b.HasOne("School_Management_System.Models.school_related.School", "School")
                         .WithMany("Users")
                         .HasForeignKey("SchoolID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Classroom");
 

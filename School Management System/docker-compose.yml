@@ -32,7 +32,11 @@ services:
       Google__ClientSecret: ${GOOGLE_CLIENT_SECRET}
     restart: unless-stopped
     volumes:
+      # - "D:/School-Management-System/School Management System:/app"
       - data_protection_keys:/app/DataProtection-Keys
+    command: >
+      sh -c "dotnet watch run --urls http://0.0.0.0:8080"
+
 volumes:
   mysql_data:
   data_protection_keys:
