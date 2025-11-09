@@ -1,0 +1,35 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+  school-management-system:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: school-management-system
+    depends_on:
+      - mysql
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=mysql;Port=3306;Database=${MYSQL_DATABASE};User=${MYSQL_USER};Password=${MYSQL_PASSWORD};"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+      - data_protection_keys:/app/DataProtection-Keys
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  data_protection_keys:

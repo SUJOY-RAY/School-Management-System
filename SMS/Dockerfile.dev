@@ -1,0 +1,5 @@
+﻿FROM mcr.microsoft.com/dotnet/sdk:9.0 AS dev
+WORKDIR /app
+ENV DOTNET_USE_POLLING_FILE_WATCHER=1
+EXPOSE 8080
+CMD ["dotnet", "watch", "run", "--urls", "http://0.0.0.0:8080"]
