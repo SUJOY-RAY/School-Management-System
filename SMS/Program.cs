@@ -7,12 +7,14 @@ using SMS.Models;
 using SMS.Models.school_related;
 using SMS.Models.user_lists;
 using SMS.Services;
+using SMS.Tools;
 using System.IO;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
 
 
 builder.Services.AddDataProtection()
@@ -28,6 +30,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped(typeof(ICrudRepository<>), typeof(CrudRepository<>));
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ContextHandler>();
+
+
+
 
 builder.Services.AddAuthentication(options =>
 {

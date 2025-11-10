@@ -15,10 +15,18 @@ namespace SMS.Infrastructure
         }
 
 
-        public async Task AddAsync(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<List<TEntity>> AddAllAsync(List<TEntity> entities)
+        {
+            await _dbSet.AddRangeAsync(entities);
+            await _context.SaveChangesAsync();
+            return entities;
         }
 
         public async Task DeleteAsync(int id)
@@ -27,7 +35,7 @@ namespace SMS.Infrastructure
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<ICollection<TEntity>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
         }
@@ -41,12 +49,13 @@ namespace SMS.Infrastructure
             return entity;
         }
 
-        public async Task UpdateAsync(TEntity entity)
+        public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             _dbSet.Update(entity);
             await _context.SaveChangesAsync();
+            return entity;
         }
-        public async Task<(IEnumerable<TEntity> Items, int TotalCount)> GetPagedAsync(int page, int pageSize)
+        public async Task<(ICollection<TEntity> Items, int TotalCount)> GetPagedAsync(int page, int pageSize)
         {
             var query = _dbSet.AsQueryable();
 

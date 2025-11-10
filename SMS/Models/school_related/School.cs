@@ -6,9 +6,9 @@
         public string Name { get; set; } = String.Empty;
         public string Description { get; set; } = String.Empty;
 
-        public IEnumerable<Classroom> Classrooms { get; set; } = new List<Classroom>();
+        public ICollection<Classroom> Classrooms { get; set; } = new List<Classroom>();
 
-        public IEnumerable<User> Users { get; set; } = new List<User>();
+        public ICollection<User> Users { get; set; } = new List<User>();
 
         public bool Active { get; set; } = true;
     }

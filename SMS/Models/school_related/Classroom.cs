@@ -1,4 +1,6 @@
-﻿namespace SMS.Models.school_related
+﻿using SMS.Models.Joins;
+
+namespace SMS.Models.school_related
 {
     public class Classroom
     {
@@ -6,8 +8,8 @@
         public int SchoolID { get; set; }
         public School School { get; set; } = null!;
         public string Name { get; set; } = string.Empty;
-        public IEnumerable<User> Users { get; set; } = new List<User>();
+        public ICollection<ClassroomUser> ClassroomUsers { get; set; } = new List<ClassroomUser>();
 
-        public IEnumerable<Attendance> Attendances { get; set; } = new List<Attendance>();
+        public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
     }
 }

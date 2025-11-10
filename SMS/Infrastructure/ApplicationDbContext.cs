@@ -5,6 +5,7 @@ using SMS.Models.school_related;
 using SMS.Models.user_lists;
 using SMS.Tools;
 using System.Reflection.Emit;
+using SMS.Models.Joins;
 
 namespace SMS.Infrastructure
 {
@@ -13,7 +14,10 @@ namespace SMS.Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<School> Schools { get; set; }
         public DbSet<ListOfUsers> ListOfUsers { get; set; }
-        
+
+        public DbSet<Classroom> Classrooms { get; set; }
+        public DbSet<ClassroomUser> ClassroomUsers { get; set; }
+
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
@@ -46,11 +50,6 @@ namespace SMS.Infrastructure
             {
                 c.HasKey(c => c.Id);
 
-                c.HasMany(c => c.Users)
-                 .WithOne(u => u.Classroom)
-                 .HasForeignKey(u => u.ClassroomID)
-                 .OnDelete(DeleteBehavior.Cascade);
-
                 c.HasMany(c => c.Attendances)
                  .WithOne(a => a.Classroom)
                  .HasForeignKey(u => u.ClassroomID)
@@ -65,6 +64,19 @@ namespace SMS.Infrastructure
                    .WithMany()
                    .HasForeignKey(u => u.SchoolID);
 
+            });
+
+            builder.Entity<ClassroomUser>(usr_cls =>
+            {
+                builder.Entity<ClassroomUser>()
+                    .HasOne(cu => cu.Classroom)
+                    .WithMany(c => c.ClassroomUsers)
+                    .HasForeignKey(cu => cu.ClassroomId);
+
+                builder.Entity<ClassroomUser>()
+                    .HasOne(cu => cu.User)
+                    .WithMany(u => u.ClassroomUsers)
+                    .HasForeignKey(cu => cu.UserId);
             });
 
             builder.SeedSchool();
