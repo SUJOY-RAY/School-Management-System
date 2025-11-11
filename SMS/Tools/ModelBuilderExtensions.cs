@@ -41,7 +41,6 @@ namespace SMS.Tools
                     SchoolID = schoolId,
                     Email = "sujoy2k4@gmail.com",
                     Role = Role.Admin,
-                    ClassroomID = null  // Admin has no classroom
                 },
                 new ListOfUsers
                 {
@@ -49,13 +48,11 @@ namespace SMS.Tools
                     SchoolID = schoolId,
                     Email = "kineticelement1@gmail.com",
                     Role = Role.Principal,
-                    ClassroomID = null  // Principal has no classroom
                 },
                 new ListOfUsers
                 {
                     Id = 3,
                     SchoolID = schoolId,
-                    ClassroomID = classroomId,
                     Email = "teacher@school.com",
                     Role = Role.Teacher
                 },
@@ -63,7 +60,6 @@ namespace SMS.Tools
                 {
                     Id = 4,
                     SchoolID = schoolId,
-                    ClassroomID = classroomId,
                     Email = "student@school.com",
                     Role = Role.Student
                 }

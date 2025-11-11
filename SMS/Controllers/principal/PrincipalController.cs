@@ -12,9 +12,9 @@ namespace SMS.Controllers.Principal
     {
         private readonly ContextHandler _contextHandler;
         private readonly IWebHostEnvironment _env;
-        private readonly ICrudRepository<ListOfUsers> _louRepo;
+        private readonly IGenericRepository<ListOfUsers> _louRepo;
 
-        public PrincipalController(ContextHandler contextHandler, IWebHostEnvironment env, ICrudRepository<ListOfUsers> louRepo)
+        public PrincipalController(ContextHandler contextHandler, IWebHostEnvironment env, IGenericRepository<ListOfUsers> louRepo)
         {
             _contextHandler = contextHandler;
             _env = env;
@@ -77,7 +77,6 @@ namespace SMS.Controllers.Principal
                         {
                             Email = email,
                             SchoolID = int.Parse(schoolIdText),
-                            ClassroomID = int.TryParse(classroomIdText, out var clsId) ? clsId : null,
                             Role = Enum.TryParse<Role>(roleText, true, out var role) ? role : Role.Student
                         };
 

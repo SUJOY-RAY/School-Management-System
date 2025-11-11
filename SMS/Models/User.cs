@@ -1,5 +1,4 @@
-﻿using SMS.Models.Joins;
-using SMS.Models.school_related;
+﻿using SMS.Models.school_related;
 
 namespace SMS.Models
 {
@@ -17,6 +16,6 @@ namespace SMS.Models
         public int? SchoolID { get; set; }
         public School? School { get; set; } = null!;
 
-        public ICollection<ClassroomUser> ClassroomUsers { get; set; } = new List<ClassroomUser>();
+        public ICollection<Classroom> Classrooms { get; set; } = new List<Classroom>();
     }
 }

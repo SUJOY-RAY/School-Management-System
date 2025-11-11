@@ -22,5 +22,11 @@ namespace SMS.Tools
             return _http.HttpContext?.User?
                 .Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
         }
+
+        public string? GetCurrentUserId()
+        {
+            return _http.HttpContext?.User?
+                .Claims.FirstOrDefault(c => c.Type == ClaimTypes.PrimarySid)?.Value;
+        }
     }
 }

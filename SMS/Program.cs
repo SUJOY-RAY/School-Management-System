@@ -7,6 +7,8 @@ using SMS.Models;
 using SMS.Models.school_related;
 using SMS.Models.user_lists;
 using SMS.Services;
+using SMS.Services.Interfaces;
+using SMS.Services.Templates;
 using SMS.Tools;
 using System.IO;
 using System.Security.Claims;
@@ -28,8 +30,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     )
 );
 
-builder.Services.AddScoped(typeof(ICrudRepository<>), typeof(CrudRepository<>));
-builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+
 builder.Services.AddScoped<ContextHandler>();
 
 
@@ -61,10 +64,8 @@ builder.Services.AddAuthentication(options =>
         // Lookup user in Users table
         var user = await db.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == email);
 
-        // Lookup registered user in ListOfUsers
         var regUser = await db.ListOfUsers
             .Include(x => x.School)
-            .Include(x => x.Classroom)
             .FirstOrDefaultAsync(x => x.Email.ToLower() == email);
 
         if (regUser == null)
@@ -80,7 +81,6 @@ builder.Services.AddAuthentication(options =>
                 Email = email,
                 Name = fullName ?? email,
                 SchoolID = regUser.SchoolID,
-                ClassroomID = regUser.ClassroomID,
                 Phone = phone ?? string.Empty,
                 Role = regUser.Role
             };
@@ -95,7 +95,6 @@ builder.Services.AddAuthentication(options =>
                 await db.SaveChangesAsync();
             }
 
-            // Update role if changed in ListOfUsers
             if (user.Role != regUser.Role)
             {
                 user.Role = regUser.Role;
@@ -103,22 +102,19 @@ builder.Services.AddAuthentication(options =>
             }
         }
 
-        // Add claims for authentication cookie
         var claimsIdentity = ctx.Principal.Identity as ClaimsIdentity;
         if (claimsIdentity != null)
         {
-            // Remove old role claims if exist
             var existingRoleClaim = claimsIdentity.FindFirst(ClaimTypes.Role);
             if (existingRoleClaim != null)
             {
                 claimsIdentity.RemoveClaim(existingRoleClaim);
             }
 
-            // Add role claim
             claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, user.Role.ToString()));
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.PrimarySid, user.Id.ToString()));
         }
     };
-
 });
 var app = builder.Build();
 

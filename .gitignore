@@ -6,3 +6,4 @@ DataProtection-Keys
 /School Management System/.env
 .vs
 .env
+/SMS/appsettings.json
