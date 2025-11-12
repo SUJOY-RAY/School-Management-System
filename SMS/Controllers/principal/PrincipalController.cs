@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
-using SMS.Infrastructure;
+using SMS.Infrastructure.Interfaces;
 using SMS.Models;
 using SMS.Models.user_lists;
 using SMS.Tools;

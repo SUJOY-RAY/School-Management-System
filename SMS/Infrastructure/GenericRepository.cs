@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SMS.Infrastructure.Interfaces;
+using SMS.Models.school_related;
 using System.Linq.Expressions;
 
 namespace SMS.Infrastructure
@@ -16,7 +18,12 @@ namespace SMS.Infrastructure
 
         public async Task<TEntity?> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            var result = await _dbSet.FindAsync(id);
+            if(result == null)
+            {
+                throw new KeyNotFoundException($"No entity found with id: {id}");
+            }
+            return result;
         }
 
         public async Task<ICollection<TEntity>> GetAllAsync(bool asNoTracking = true)

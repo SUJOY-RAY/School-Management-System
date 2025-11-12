@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace SMS.Infrastructure
+namespace SMS.Infrastructure.Interfaces
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {

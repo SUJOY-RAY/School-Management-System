@@ -1,5 +1,4 @@
-﻿using SMS.Models.Joins;
-using SMS.Models.school_related;
+﻿using SMS.Models.school_related;
 
 namespace SMS.Models.user_lists
 {

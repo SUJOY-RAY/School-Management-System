@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using SMS.Infrastructure;
+using SMS.Infrastructure.Interfaces;
 using SMS.Models;
 using SMS.Models.school_related;
 using SMS.Models.user_lists;
@@ -34,7 +35,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 
 builder.Services.AddScoped<ContextHandler>();
-
+builder.Services.AddScoped<ClassroomService>();
 
 
 

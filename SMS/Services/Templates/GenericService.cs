@@ -1,4 +1,4 @@
-﻿using SMS.Infrastructure;
+﻿using SMS.Infrastructure.Interfaces;
 using SMS.Services.Interfaces;
 using System.Linq.Expressions;
 

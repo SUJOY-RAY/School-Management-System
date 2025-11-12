@@ -1,24 +1,22 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SMS.Infrastructure;
+using SMS.Infrastructure.Interfaces;
 using SMS.Models;
 using SMS.Models.school_related;
 using SMS.Services;
 using SMS.Services.Interfaces;
 using SMS.Shared;
 using SMS.Tools;
-using System.Numerics;
 
 namespace SMS.Controllers.school_related
 {
     public class ClassroomController : Controller
     {
-        private IGenericService<Classroom> classroomService { get; set; }
+        private ClassroomService classroomService { get; set; }
         private IGenericRepository<User> userRepository { get; set; }
         private ContextHandler contextHandler { get; set; }
 
-        public ClassroomController(IGenericService<Classroom> classroomService, IGenericRepository<User> userRepository, ContextHandler contextHandler)
+        public ClassroomController(ClassroomService classroomService, IGenericRepository<User> userRepository, ContextHandler contextHandler)
         {
             this.classroomService = classroomService;
             this.userRepository = userRepository;
@@ -39,17 +37,40 @@ namespace SMS.Controllers.school_related
                     classrooms.AddRange(await classroomService.GetFilteredAsync(c => c.SchoolID == user.SchoolID));
                     break;
                 case Role.Teacher:
-                    classrooms.AddRange(await classroomService.GetFilteredAsync(c => c.Users.Contains(user.Classrooms));
-
+                case Role.Student:
+                    classrooms.AddRange(await classroomService.GetFilteredAsync(
+                            c => c.Users.Any(ct => ct.Id == currUserId
+                        )));
+                    break;
             }
 
-            return View();
+            return View(classrooms);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Principal")]
         public async Task<IActionResult> Create(ClassroomCreateDto classroomCreateDto)
         {
-            return View(classroomService.CreateAsync(classroomCreateDto));
+            var currUserId = int.Parse(contextHandler.GetCurrentUserId());
+
+            var user = await userRepository.GetByIdAsync(currUserId);
+
+            Classroom classroom = new Classroom
+            {
+                Name = classroomCreateDto.Name,
+                School = user.School
+            };
+
+            return View(classroomService.CreateAsync(classroom));
+        }
+
+        [Authorize(Roles = "Principal")]
+        public async Task<IActionResult> Delete(int id) {
+            var currUserId = int.Parse(contextHandler.GetCurrentUserId());
+
+            var user = await userRepository.GetByIdAsync(currUserId);
+            await classroomService.DeleteAsync(id, user);
+
+            return RedirectToAction("All");
         }
     }
 }
