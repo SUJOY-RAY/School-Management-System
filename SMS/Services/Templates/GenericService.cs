@@ -18,12 +18,12 @@ namespace SMS.Services.Templates
             return await _repository.GetByIdAsync(id);
         }
 
-        public async Task<ICollection<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _repository.GetAllAsync();
         }
 
-        public async Task<ICollection<TEntity>?> GetFilteredAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>?> GetFilteredAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _repository.GetFilteredAsync(predicate);
         }

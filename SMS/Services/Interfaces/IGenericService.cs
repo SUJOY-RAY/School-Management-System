@@ -5,8 +5,8 @@ namespace SMS.Services.Interfaces
     public interface IGenericService<TEntity> where TEntity : class
     {
         Task<TEntity?> GetByIdAsync(int id);
-        Task<ICollection<TEntity>> GetAllAsync();
-        Task<ICollection<TEntity>> GetFilteredAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<IEnumerable<TEntity>> GetFilteredAsync(Expression<Func<TEntity, bool>> predicate);
 
         Task<TEntity> CreateAsync(TEntity entity);
         Task CreateRange(List<TEntity> entities);

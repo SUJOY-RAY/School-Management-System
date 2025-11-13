@@ -1,0 +1,59 @@
+﻿@using SMS.Models.user_lists
+@model IEnumerable<ListOfUsers>
+
+@{
+    ViewData["Title"] = "View All LOU";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<!-- Table -->
+<table id="louTable" class="table table-bordered table-striped mt-3">
+    <thead class="table-dark">
+        <tr>
+            <th>Email</th>
+            <th>Role</th>
+            <th>School</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>@user.SchoolID</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- jQuery and DataTables scripts -->
+@section Scripts {
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- DataTables CSS and JS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <!-- DataTables Bootstrap 5 integration (optional for better styling) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#louTable').DataTable({
+                "pageLength": 10,          // number of records per page
+                "lengthMenu": [5, 10, 25, 50],
+                "ordering": true,          // enable sorting
+                "searching": true,         // enable search
+                "responsive": true,        // make it responsive
+                "language": {
+                    "search": "Search Users:",
+                    "lengthMenu": "Show _MENU_ entries"
+                }
+            });
+        });
+    </script>
+}
