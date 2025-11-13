@@ -36,6 +36,7 @@ builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 
 builder.Services.AddScoped<ContextHandler>();
 builder.Services.AddScoped<ClassroomService>();
+builder.Services.AddScoped<StaticImageService>();
 
 
 
@@ -130,6 +131,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();

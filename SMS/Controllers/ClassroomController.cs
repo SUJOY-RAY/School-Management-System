@@ -8,7 +8,7 @@ using SMS.Services.Interfaces;
 using SMS.Shared;
 using SMS.Tools;
 
-namespace SMS.Controllers.school_related
+namespace SMS.Controllers
 {
     public class ClassroomController : Controller
     {
@@ -21,7 +21,6 @@ namespace SMS.Controllers.school_related
             this.classroomService = classroomService;
             this.userRepository = userRepository;
             this.contextHandler = contextHandler;
-
         }
 
         [Authorize]
@@ -64,7 +63,8 @@ namespace SMS.Controllers.school_related
         }
 
         [Authorize(Roles = "Principal")]
-        public async Task<IActionResult> Delete(int id) {
+        public async Task<IActionResult> Delete(int id)
+        {
             var currUserId = int.Parse(contextHandler.GetCurrentUserId());
 
             var user = await userRepository.GetByIdAsync(currUserId);

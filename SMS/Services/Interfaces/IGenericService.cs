@@ -9,6 +9,8 @@ namespace SMS.Services.Interfaces
         Task<ICollection<TEntity>> GetFilteredAsync(Expression<Func<TEntity, bool>> predicate);
 
         Task<TEntity> CreateAsync(TEntity entity);
+        Task CreateRange(List<TEntity> entities);
+
         Task<TEntity> UpdateAsync(TEntity entity);
         Task DeleteAsync(int id);
     }

@@ -34,6 +34,15 @@ namespace SMS.Services.Templates
             return entity;
         }
 
+        public async Task CreateRange(List<TEntity> entities)
+        {
+            if (entities==null)
+            {
+                throw new ArgumentNullException(nameof(entities));                
+            }
+            await _repository.AddAllAsync(entities);
+        }
+
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             await _repository.UpdateAsync(entity);

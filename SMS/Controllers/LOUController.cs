@@ -1,42 +1,29 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
-using SMS.Infrastructure.Interfaces;
 using SMS.Models;
 using SMS.Models.user_lists;
-using SMS.Tools;
+using SMS.Services.Interfaces;
 
-namespace SMS.Controllers.Principal
+namespace SMS.Controllers
 {
-    public class PrincipalController : Controller
-    {
-        private readonly ContextHandler _contextHandler;
-        private readonly IWebHostEnvironment _env;
-        private readonly IGenericRepository<ListOfUsers> _louRepo;
 
-        public PrincipalController(ContextHandler contextHandler, IWebHostEnvironment env, IGenericRepository<ListOfUsers> louRepo)
+    public class LOUController : Controller
+    {
+        private readonly IGenericService<ListOfUsers> louService;
+
+        public LOUController(IGenericService<ListOfUsers> louService)
         {
-            _contextHandler = contextHandler;
-            _env = env;
-            _louRepo = louRepo;
+            this.louService = louService;
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var folderPath = Path.Combine(_env.WebRootPath, "static", "Principal");
-            var files = Directory.Exists(folderPath)
-                ? Directory.GetFiles(folderPath)
-                    .Select(Path.GetFileName)
-                    .ToList()
-                : new List<string>();
-            var images = files.Select(f => (ImageName: f, TargetController: "Student", TargetAction: "Index"))
-                  .ToList();
-
-            return View(images);
+            var lou = await louService.GetAllAsync();
+            return View(lou);
         }
 
-        [HttpGet]
         [Authorize]
         public IActionResult UploadLOU()
         {
@@ -63,7 +50,7 @@ namespace SMS.Controllers.Principal
                     var worksheet = package.Workbook.Worksheets.First();
                     var rowCount = worksheet.Dimension.Rows;
 
-                    for (int row = 2; row <= rowCount; row++) 
+                    for (int row = 2; row <= rowCount; row++)
                     {
                         var email = worksheet.Cells[row, 1].Text.Trim();
                         var schoolIdText = worksheet.Cells[row, 2].Text.Trim();
@@ -84,10 +71,12 @@ namespace SMS.Controllers.Principal
                     }
                 }
             }
-            await _louRepo.AddAllAsync(users);
+
+            await louService.CreateRange(users);  
 
             TempData["Success"] = $"{users.Count} users uploaded successfully!";
             return RedirectToAction("Index");
         }
+
     }
 }

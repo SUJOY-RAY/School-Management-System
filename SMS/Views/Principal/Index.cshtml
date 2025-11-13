@@ -1,19 +1,11 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model List<(string ImageName, string TargetController, string TargetAction)>
-
-@{
-    ViewData["Title"] = "Principal Dashboard";
-}
+﻿@model List<(string ImageUrl, string TargetController, string TargetAction)>
 
 <style>
     .masonry-grid {
         columns: 3;
         column-gap: 14px;
         width: 100%;
+        margin-top: 20px;
     }
 
         .masonry-grid img {
@@ -32,6 +24,26 @@
                 position: relative;
                 z-index: 10;
             }
+
+    @@media (max-width: 992px) {
+        .masonry-grid {
+            columns: 2;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .masonry-grid {
+            columns: 1;
+        }
+    }
+
+    .masonry-grid a {
+        text-decoration: none;
+    }
+
+    .masonry-grid img:active {
+        transform: scale(1.02);
+    }
 </style>
 
 <div class="container">
@@ -39,7 +51,7 @@
         @foreach (var item in Model)
         {
             <a asp-controller="@item.TargetController" asp-action="@item.TargetAction">
-                <img src="~/Static/Principal-index-page-grid/@item.ImageName" alt="@item.ImageName" />
+                <img src="@Url.Content($"~/{item.ImageUrl}")" alt="@item.TargetAction" />
             </a>
         }
     </div>
