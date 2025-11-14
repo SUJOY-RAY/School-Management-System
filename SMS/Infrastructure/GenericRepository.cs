@@ -49,13 +49,15 @@ namespace SMS.Infrastructure
         public async Task<List<TEntity>> AddAllAsync(List<TEntity> entities)
         {
             await _dbSet.AddRangeAsync(entities);
+            _context.SaveChangesAsync();
             return entities;
         }
 
-        public Task<TEntity> UpdateAsync(TEntity entity)
+        public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             _dbSet.Update(entity);
-            return Task.FromResult(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
         public async Task DeleteAsync(int id)
@@ -63,6 +65,7 @@ namespace SMS.Infrastructure
             var entity = await _dbSet.FindAsync(id);
             if (entity != null)
                 _dbSet.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<(ICollection<TEntity> Items, int TotalCount)> GetPagedAsync(int page, int pageSize)

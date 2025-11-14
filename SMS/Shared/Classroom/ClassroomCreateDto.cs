@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SMS.Shared
+namespace SMS.Shared.Classroom
 {
     public class ClassroomCreateDto
     {

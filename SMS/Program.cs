@@ -115,6 +115,7 @@ builder.Services.AddAuthentication(options =>
 
             claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, user.Role.ToString()));
             claimsIdentity.AddClaim(new Claim(ClaimTypes.PrimarySid, user.Id.ToString()));
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.GroupSid, user.SchoolID.ToString()));
         }
     };
 });

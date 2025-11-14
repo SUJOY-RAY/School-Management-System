@@ -5,7 +5,7 @@ using SMS.Models;
 using SMS.Models.school_related;
 using SMS.Services;
 using SMS.Services.Interfaces;
-using SMS.Shared;
+using SMS.Shared.Classroom;
 using SMS.Tools;
 
 namespace SMS.Controllers
@@ -24,48 +24,36 @@ namespace SMS.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> AllClasses()
         {
-            var currUserId = int.Parse(contextHandler.GetCurrentUserId());
+            var currUserId = contextHandler.GetCurrentUserId();
 
             var user = await userRepository.GetByIdAsync(currUserId);
-            var classrooms = new List<Classroom>();
-            switch (user.Role)
-            {
-                case Role.Principal:
-                    classrooms.AddRange(await classroomService.GetFilteredAsync(c => c.SchoolID == user.SchoolID));
-                    break;
-                case Role.Teacher:
-                case Role.Student:
-                    classrooms.AddRange(await classroomService.GetFilteredAsync(
-                            c => c.Users.Any(ct => ct.Id == currUserId
-                        )));
-                    break;
-            }
 
-            return View(classrooms);
+            return View(await classroomService.GetAllAsync(user));
         }
 
         [Authorize(Roles = "Principal")]
         public async Task<IActionResult> Create(ClassroomCreateDto classroomCreateDto)
         {
-            var currUserId = int.Parse(contextHandler.GetCurrentUserId());
+            var currUserId = contextHandler.GetCurrentUserId();
 
             var user = await userRepository.GetByIdAsync(currUserId);
+            var school = await contextHandler.GetCurrentUserSchool() ?? throw new KeyNotFoundException("User not assigned any school.");
 
             Classroom classroom = new Classroom
             {
                 Name = classroomCreateDto.Name,
-                School = user.School
+                School = school
             };
 
-            return View(classroomService.CreateAsync(classroom));
+            return View(await classroomService.CreateAsync(classroom));
         }
 
         [Authorize(Roles = "Principal")]
         public async Task<IActionResult> Delete(int id)
         {
-            var currUserId = int.Parse(contextHandler.GetCurrentUserId());
+            var currUserId = contextHandler.GetCurrentUserId();
 
             var user = await userRepository.GetByIdAsync(currUserId);
             await classroomService.DeleteAsync(id, user);

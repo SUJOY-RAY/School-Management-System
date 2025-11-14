@@ -14,6 +14,7 @@
             <th>Email</th>
             <th>Role</th>
             <th>School</th>
+            <th class="text-center">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -23,32 +24,33 @@
                 <td>@user.Email</td>
                 <td>@user.Role</td>
                 <td>@user.SchoolID</td>
+
+                <td class="text-center">
+                    <a href="@Url.Action("UpdateLOU", "LOU", new { id = user.Id })" class="btn btn-sm btn-primary">
+                        Update
+                    </a>
+
+                    <!-- Delete button -->
+                    <a href="@Url.Action("DeleteLOU", "LOU", new { id = user.Id })"
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Are you sure you want to delete this user?');">
+                        Delete
+                    </a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
 
-<!-- jQuery and DataTables scripts -->
 @section Scripts {
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-    <!-- DataTables CSS and JS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-    <!-- DataTables Bootstrap 5 integration (optional for better styling) -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
     <script>
         $(document).ready(function() {
             $('#louTable').DataTable({
-                "pageLength": 10,          // number of records per page
+                "pageLength": 10,
                 "lengthMenu": [5, 10, 25, 50],
-                "ordering": true,          // enable sorting
-                "searching": true,         // enable search
-                "responsive": true,        // make it responsive
+                "ordering": true,
+                "searching": true,
+                "responsive": true,
                 "language": {
                     "search": "Search Users:",
                     "lengthMenu": "Show _MENU_ entries"

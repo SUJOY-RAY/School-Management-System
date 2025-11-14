@@ -1,4 +1,4 @@
-﻿namespace SMS.Services
+﻿namespace SMS.Tools
 {
     public class StaticImageService
     {

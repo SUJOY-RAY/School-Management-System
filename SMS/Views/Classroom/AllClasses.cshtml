@@ -1,0 +1,47 @@
+﻿@model IEnumerable<SMS.Models.school_related.Classroom>
+
+@{
+    ViewData["Title"] = "Classrooms";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Classrooms</h2>
+
+    <table id="classTable" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Classroom ID</th>
+                <th>Name</th>
+                <th>School ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@c.Name</td>
+                    <td>@c.SchoolID</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#classTable').DataTable({
+                "pageLength": 10,
+                "lengthMenu": [5, 10, 25, 50],
+                "ordering": true,
+                "searching": true,
+                "responsive": true,
+                "language": {
+                    "search": "Search Classes:",
+                    "lengthMenu": "Show _MENU_ entries"
+                }
+            });
+        });
+    </script>
+}
