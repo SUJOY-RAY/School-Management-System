@@ -4,7 +4,7 @@ namespace SMS.Services.Interfaces
 {
     public interface IGenericService<TEntity> where TEntity : class
     {
-        Task<TEntity?> GetByIdAsync(int id);
+        Task<TEntity?> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes);
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<IEnumerable<TEntity>> GetFilteredAsync(Expression<Func<TEntity, bool>> predicate);
 

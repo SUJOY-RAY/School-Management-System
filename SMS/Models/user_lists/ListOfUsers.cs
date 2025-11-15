@@ -8,6 +8,8 @@ namespace SMS.Models.user_lists
 
         public int SchoolID { get; set; }
         public School School { get; set; } = null!;
+
+        public ICollection<Classroom> Classrooms { get; set; } = new List<Classroom>();
         
         public string Email { get; set; } = string.Empty;
         public Role Role { get; set; }

@@ -1,0 +1,29 @@
+﻿@model SMS.Shared.Classroom.ClassroomCreateDto
+
+@{
+    ViewData["Title"] = "Create Classroom";
+}
+
+<h1>Create Classroom</h1>
+<div class="container width">
+    <div class="row justify-content-lg-start">
+        <div class="col-12 col-md-6 col-lg-4">
+            <form asp-action="CreateClassroom" method="post">
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-3">Create</button>
+            </form>
+            <div class="mt-3">
+                <a asp-action="Classes" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

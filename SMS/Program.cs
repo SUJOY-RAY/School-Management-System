@@ -36,6 +36,7 @@ builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 
 builder.Services.AddScoped<ContextHandler>();
 builder.Services.AddScoped<ClassroomService>();
+builder.Services.AddScoped<LOUService>();
 builder.Services.AddScoped<StaticImageService>();
 
 

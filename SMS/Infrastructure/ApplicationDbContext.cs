@@ -3,8 +3,6 @@ using SMS.Tools;
 using SMS.Models;
 using SMS.Models.school_related;
 using SMS.Models.user_lists;
-using SMS.Tools;
-using System.Reflection.Emit;
 
 namespace SMS.Infrastructure
 {
@@ -48,6 +46,9 @@ namespace SMS.Infrastructure
             {
                 c.HasKey(c => c.Id);
 
+                c.HasIndex(c => c.Name)
+                 .IsUnique();
+
                 c.HasMany(c => c.Attendances)
                  .WithOne(a => a.Classroom)
                  .HasForeignKey(u => u.ClassroomID)
@@ -63,7 +64,8 @@ namespace SMS.Infrastructure
                 lou.HasOne(u => u.School)
                    .WithMany()
                    .HasForeignKey(u => u.SchoolID);
-
+                //lou.HasMany(l => Classrooms)
+                //   .WithOne();
             });
 
             builder.SeedSchool();

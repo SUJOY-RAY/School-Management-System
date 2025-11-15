@@ -6,6 +6,6 @@ namespace SMS.Shared.Classroom
     {
         [Required]
         [MinLength(3), MaxLength(15)]
-        public string Name = string.Empty;
+        public string Name { get; set; } = string.Empty;
     }
 }

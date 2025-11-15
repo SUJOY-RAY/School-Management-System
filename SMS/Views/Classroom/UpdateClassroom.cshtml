@@ -1,0 +1,71 @@
+﻿@model SMS.Shared.Classroom.ClassroomUpdateViewModel
+@{
+    ViewData["Title"] = "Update Classroom";
+}
+
+<h2>Update Classroom</h2>
+
+<form asp-action="UpdateClassroom" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group mb-3">
+        <label asp-for="Name" class="form-label">Classroom Name</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <h4>Users</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Users.Count; i++)
+            {
+                <tr>
+                    <td>@Model.Users[i].Email</td>
+                    <td>@Model.Users[i].Role</td>
+                    <td>
+                        <input type="checkbox" asp-for="@Model.UserIds[i]" value="@Model.Users[i].Id" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Attendances</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        @* <tbody>
+            @for (int i = 0; i < Model.Attendances.Count; i++)
+            {
+                <tr>
+                    <td>@Model.Attendances[i].Date.ToShortDateString()</td>
+                    <td>@Model.Attendances[i].</td>
+                    <td>
+                        <input type="checkbox" asp-for="@Model.AttendanceIdsToRemove[i]" value="@Model.Attendances[i].Id" />
+                    </td>
+                </tr>
+            }
+        </tbody> *@
+    </table>
+
+    <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Optionally, you can add DataTables or dynamic behaviors here
+        });
+    </script>
+}

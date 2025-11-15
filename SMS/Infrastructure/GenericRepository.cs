@@ -16,15 +16,23 @@ namespace SMS.Infrastructure
             _dbSet = _context.Set<TEntity>();
         }
 
-        public async Task<TEntity?> GetByIdAsync(int id)
+        public async Task<TEntity?> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes)
         {
-            var result = await _dbSet.FindAsync(id);
-            if(result == null)
+            IQueryable<TEntity> query = _dbSet;
+
+            foreach (var include in includes)
             {
-                throw new KeyNotFoundException($"No entity found with id: {id}");
+                query = query.Include(include);
             }
-            return result;
+
+            var entity = await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
+
+            if (entity == null)
+                throw new KeyNotFoundException($"No entity found with id: {id}");
+
+            return entity;
         }
+
 
         public async Task<ICollection<TEntity>> GetAllAsync(bool asNoTracking = true)
         {
@@ -42,14 +50,22 @@ namespace SMS.Infrastructure
 
         public async Task<TEntity> AddAsync(TEntity entity)
         {
-            await _dbSet.AddAsync(entity);
-            return entity;
+            try
+            {
+                await _dbSet.AddAsync(entity);
+                await _context.SaveChangesAsync();
+                return entity;
+            }
+            catch(Exception e)
+            {
+                throw new Exception("Exception while adding", e);
+            }
         }
 
         public async Task<List<TEntity>> AddAllAsync(List<TEntity> entities)
         {
             await _dbSet.AddRangeAsync(entities);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return entities;
         }
 

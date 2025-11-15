@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using OfficeOpenXml;
 using SMS.Models;
-using SMS.Models.school_related;
 using SMS.Models.user_lists;
+using SMS.Services;
 using SMS.Services.Interfaces;
+using SMS.Services.Templates;
 using SMS.Shared.LOU;
 using SMS.Tools;
 
@@ -14,16 +14,18 @@ namespace SMS.Controllers
 
     public class LOUController : Controller
     {
-        private readonly IGenericService<ListOfUsers> louService;
+        private readonly GenericService<ListOfUsers> louService;
+        private readonly LOUService lOUService;
         private readonly ContextHandler contextHandler;
 
-        public LOUController(IGenericService<ListOfUsers> louService, ContextHandler contextHandler)
+        public LOUController(GenericService<ListOfUsers> louService, LOUService lOUService, ContextHandler contextHandler)
         {
             this.louService = louService;
+            this.lOUService = lOUService;
             this.contextHandler = contextHandler;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Principal")]
         public async Task<IActionResult> LOU()
         {
             var lou = await louService.GetAllAsync();
@@ -41,44 +43,16 @@ namespace SMS.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadLOU(IFormFile file)
         {
-            var currUserSchool = await contextHandler.GetCurrentUserSchool() ?? throw new KeyNotFoundException("School not assigned to this user");
-
             if (file == null || file.Length == 0)
             {
                 TempData["Error"] = "Please select a valid Excel file.";
                 return View();
             }
-            var users = new List<ListOfUsers>();
-
-            using (var stream = new MemoryStream())
-            {
-                file.CopyTo(stream);
-                using (var package = new ExcelPackage(stream))
-                {
-                    var worksheet = package.Workbook.Worksheets.First();
-                    var rowCount = worksheet.Dimension.Rows;
-
-                    for (int row = 2; row <= rowCount; row++)
-                    {
-                        var email = worksheet.Cells[row, 1].Text.Trim();
-                        var classroomIdText = worksheet.Cells[row, 3].Text.Trim();
-                        var roleText = worksheet.Cells[row, 4].Text.Trim();
 
 
-                        var user = new ListOfUsers
-                        {
-                            Email = email,
-                            School = currUserSchool,
-                            Role = Enum.TryParse<Role>(roleText, true, out var role) ? role : Role.Student
-                        };
-                        users.Add(user);
-                    }
-                }
-            }
+            var count = await lOUService.CreateRange(file);  
 
-            await louService.CreateRange(users);  
-
-            TempData["Success"] = $"{users.Count} users uploaded successfully!";
+            TempData["Success"] = $" {count} users uploaded successfully!";
             return RedirectToAction("Index");
         }
 
@@ -128,6 +102,15 @@ namespace SMS.Controllers
             await louService.UpdateAsync(lou);
 
             TempData["Success"] = "User updated successfully!";
+            return RedirectToAction("LOU");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteLOU(int id)
+        {
+            await louService.DeleteAsync(id);
+            TempData["Success"] = "User deleted successfully!";
+
             return RedirectToAction("LOU");
         }
     }

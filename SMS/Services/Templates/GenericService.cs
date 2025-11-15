@@ -13,9 +13,9 @@ namespace SMS.Services.Templates
             _repository = repository;
         }
 
-        public async Task<TEntity?> GetByIdAsync(int id)
+        public async Task<TEntity?> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes)
         {
-            return await _repository.GetByIdAsync(id);
+            return await _repository.GetByIdAsync(id, includes);
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -23,7 +23,7 @@ namespace SMS.Services.Templates
             return await _repository.GetAllAsync();
         }
 
-        public async Task<IEnumerable<TEntity>?> GetFilteredAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> GetFilteredAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _repository.GetFilteredAsync(predicate);
         }

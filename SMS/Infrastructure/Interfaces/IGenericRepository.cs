@@ -4,7 +4,7 @@ namespace SMS.Infrastructure.Interfaces
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-        Task<TEntity?> GetByIdAsync(int id);
+        Task<TEntity?> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes);
 
         Task<ICollection<TEntity>> GetAllAsync(bool asNoTracking = true);
 
