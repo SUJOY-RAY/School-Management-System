@@ -1,4 +1,4 @@
-﻿using SMS.Infrastructure.Interfaces;
+﻿using SMS.Infrastructure;
 using SMS.Models;
 using SMS.Models.school_related;
 using System.Security.Claims;
@@ -8,10 +8,10 @@ namespace SMS.Tools
     public class ContextHandler
     {
         private readonly IHttpContextAccessor _http;
-        private readonly IGenericRepository<User> _userRepository;
-        private readonly IGenericRepository<School> _schoolRepository;
+        private readonly GenericRepository<User> _userRepository;
+        private readonly GenericRepository<School> _schoolRepository;
 
-        public ContextHandler(IHttpContextAccessor http, IGenericRepository<User> userRepository, IGenericRepository<School> schoolRepository)
+        public ContextHandler(IHttpContextAccessor http, GenericRepository<User> userRepository, GenericRepository<School> schoolRepository)
         {
             _http = http;
             _userRepository = userRepository;

@@ -22,4 +22,10 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Services\" />
+    <Folder Include="Shared\" />
+  </ItemGroup>
+
 </Project>

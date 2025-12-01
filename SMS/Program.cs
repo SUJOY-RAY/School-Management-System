@@ -3,13 +3,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using SMS.Infrastructure;
-using SMS.Infrastructure.Interfaces;
 using SMS.Models;
 using SMS.Models.school_related;
 using SMS.Models.user_lists;
 using SMS.Services;
-using SMS.Services.Interfaces;
-using SMS.Services.Templates;
 using SMS.Tools;
 using System.IO;
 using System.Security.Claims;
@@ -31,9 +28,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     )
 );
 
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
-
+builder.Services.AddScoped(typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(GenericService<>));
 builder.Services.AddScoped<ContextHandler>();
 builder.Services.AddScoped<ClassroomService>();
 builder.Services.AddScoped<LOUService>();
